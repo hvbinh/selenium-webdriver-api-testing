@@ -7,6 +7,11 @@ import com.sun.org.glassfish.gmbal.Description;
 
 
 import org.testng.annotations.BeforeClass;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -83,6 +88,7 @@ public class Topic_04_05 {
 	  
 	  driver.navigate().back();
   }
+  
   @Test(description = "TC_05 login with valid username and password") 
   public void TC_05()
   {
@@ -101,16 +107,45 @@ public class Topic_04_05 {
 	  String expectedTest2 = "Hello, Automation Testing!";
 	  Assert.assertEquals(actualTest2, expectedTest2);
 	  
-	  String actualTest3 = driver.findElement(By.xpath("//div[@class='box-content']//p[contains(text(),'Automation Testing')]")).getText();
-	  String expectedTest3 = "Automation Testing";
-	  Assert.assertEquals(actualTest3, expectedTest3);
+	  Assert.assertTrue(driver.getPageSource().contains("Automation Testing"));
+	  Assert.assertTrue(driver.getPageSource().contains("automation_13@gmail.com"));
 	  
-	  String actualTest4 = driver.findElement(By.xpath("//div[@class='box-content']//p[contains(text(),'automation_13@gmail.com')]")).getText();
-	  String expectedTest4 = "automation_13@gmail.com";
-	  Assert.assertEquals(actualTest4, expectedTest4);
+	  driver.findElement(By.xpath("//span[@class='label' and contains(text(),'Account')]")).click();
+	  driver.findElement(By.linkText("Log Out")).click();
 	  
 	  driver.navigate().back();
+	  
   }
+  @Test(description = "TC_06 create new account") 
+	public void TC_06() {
+		driver.findElement(By.xpath("(//a[@title='My Account'])[last()]")).click();
+		driver.findElement(By.xpath("//span[contains(text(),'Create an Account')]")).click();
+
+		DateFormat dateFormat = new SimpleDateFormat("yyymmddhhssmm");
+		Calendar calendar = Calendar.getInstance();
+		String dateTime = dateFormat.format(calendar.getTime());
+
+		String firstName = "Tony";
+		String lastName = "Ferguson";
+		String email = "tonyferguson"+dateTime.toString()+"@abc.com";
+		
+		driver.findElement(By.id("firstname")).sendKeys(firstName);
+		driver.findElement(By.id("lastname")).sendKeys(lastName);
+		driver.findElement(By.id("email_address")).sendKeys(email);
+		driver.findElement(By.id("password")).sendKeys("123456");
+		driver.findElement(By.id("confirmation")).sendKeys("123456");
+		
+		driver.findElement(By.xpath("//button[@type='submit' and @title='Register']")).click();
+		
+		String textDisplay = "Thank you for registering with Main Website Store.";
+		String actualTextDisplay = driver.findElement(By.xpath("//span[.='Thank you for registering with Main Website Store.']")).getText();
+		Assert.assertEquals(actualTextDisplay, textDisplay);
+		Assert.assertTrue(driver.getPageSource().contains(firstName));
+		Assert.assertTrue(driver.getPageSource().contains(lastName));
+		Assert.assertTrue(driver.getPageSource().contains(email));
+		
+	} 
+
 
   @AfterClass
   public void afterClass() {
