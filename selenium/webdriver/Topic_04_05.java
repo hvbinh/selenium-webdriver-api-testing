@@ -15,6 +15,8 @@ import java.util.Calendar;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 
@@ -87,7 +89,7 @@ public class Topic_04_05 {
 	  Assert.assertEquals(actualTest, expectedTest);
 	  
 	  driver.navigate().back();
-  }
+  } 
   
   @Test(description = "TC_05 login with valid username and password") 
   public void TC_05()
@@ -111,9 +113,7 @@ public class Topic_04_05 {
 	  Assert.assertTrue(driver.getPageSource().contains("automation_13@gmail.com"));
 	  
 	  driver.findElement(By.xpath("//span[@class='label' and contains(text(),'Account')]")).click();
-	  driver.findElement(By.linkText("Log Out")).click();
-	  
-	  driver.navigate().back();
+	  driver.findElement(By.linkText("Log Out")).click();  
 	  
   }
   @Test(description = "TC_06 create new account") 
@@ -144,7 +144,16 @@ public class Topic_04_05 {
 		Assert.assertTrue(driver.getPageSource().contains(lastName));
 		Assert.assertTrue(driver.getPageSource().contains(email));
 		
-	} 
+		driver.findElement(By.xpath("//span[@class='label' and .='Account']")).click();
+		driver.findElement(By.xpath("//a[.='Log Out']")).click();
+		
+	  	WebDriverWait wait = new WebDriverWait(driver, 30);
+	  	wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='page-title']//h2[contains(text(),'This is demo site for')]")));
+		String expectedHomePageTitle = "Home page";
+		String actual = driver.getTitle();
+		Assert.assertEquals(actual, expectedHomePageTitle);
+		
+	}
 
 
   @AfterClass
