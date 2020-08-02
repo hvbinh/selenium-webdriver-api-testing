@@ -20,31 +20,31 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 
-public class Topic_04_05 {
+public class Topic_04_05_xpath_CSS {
 	WebDriver driver;
 
   @BeforeClass
   public void beforeClass() {
-	  driver = new FirefoxDriver();
-	  driver.get("http://live.demoguru99.com");  
+	  driver = new FirefoxDriver(); 
   }
-  @Test(description = "TC_01 login with empty username, passworld") 
-  public void TC_01()
+  @Test(description = "TC_01 login with empty email, passworld") 
+  public void TC_01_Login_With_Empty_Email_Password()
   {
+	  driver.get("http://live.demoguru99.com"); 
 	  driver.findElement(By.xpath("//div[@class='footer']//a[contains(text(),'My Account')]")).click();
 	  driver.findElement(By.id("send2")).click();
 	  
-	  String actualTest1 = driver.findElement(By.xpath("//div[@id='advice-required-entry-email' and text()='This is a required field.']")).getText();
+	  String emailErrorMessage = driver.findElement(By.xpath("//div[@id='advice-required-entry-email']")).getText();
 	  String expectedTest = "This is a required field.";
-	  Assert.assertEquals(actualTest1, expectedTest);
-	  String actualTest2 = driver.findElement(By.xpath("//div[@id='advice-required-entry-pass' and text()='This is a required field.']")).getText();
-	  Assert.assertEquals(actualTest2, expectedTest); 
+	  Assert.assertEquals(emailErrorMessage, expectedTest);
+	  String passwordErrorMessage = driver.findElement(By.xpath("//div[@id='advice-required-entry-pass']")).getText();
+	  Assert.assertEquals(passwordErrorMessage, expectedTest); 
 	  
-	  driver.navigate().back();
   }
-  @Test(description = "TC_02 login with invalid email") 
-  public void TC_02()
+  @Test(description = "TC_02 login with invalid email") 																					
+  public void TC_02_Login_With_Invalid_Email()
   {
+	  driver.get("http://live.demoguru99.com"); 
 	  driver.findElement(By.xpath("//div[@class='footer']//a[contains(text(),'My Account')]")).click();
 	  
 	  driver.findElement(By.id("email")).sendKeys("1234@123.12");
@@ -52,15 +52,15 @@ public class Topic_04_05 {
 	  
 	  driver.findElement(By.id("send2")).click();
 	  
-	  String actualTest = driver.findElement(By.xpath("//div[contains(text(),'Please enter a valid email address. For example johndoe@domain.com.')]")).getText();
+	  String emailErrorMessage = driver.findElement(By.xpath("//div[contains(text(),'Please enter a valid email address. For example johndoe@domain.com.')]")).getText();
 	  String expectedTest = "Please enter a valid email address. For example johndoe@domain.com.";
-	  Assert.assertEquals(actualTest, expectedTest);
+	  Assert.assertEquals(emailErrorMessage, expectedTest);
 	  
-	  driver.navigate().back();
   }
   @Test(description = "TC_03 login with pass < 6 characters") 
-  public void TC_03()
+  public void TC_03_Login_With_Password_Less_Than_6_Characters()
   {
+	  driver.get("http://live.demoguru99.com"); 
 	  driver.findElement(By.xpath("//div[@class='footer']//a[contains(text(),'My Account')]")).click();
 	  
 	  driver.findElement(By.id("email")).sendKeys("automation@gmail.com");
@@ -68,15 +68,15 @@ public class Topic_04_05 {
 	  
 	  driver.findElement(By.id("send2")).click();
 	  
-	  String actualTest = driver.findElement(By.xpath("//div[contains(text(),'Please enter 6 or more characters without leading or trailing spaces.')]")).getText();
+	  String passWordErrorMessage = driver.findElement(By.id("advice-validate-password-pass")).getText();
 	  String expectedTest = "Please enter 6 or more characters without leading or trailing spaces.";
-	  Assert.assertEquals(actualTest, expectedTest);
+	  Assert.assertEquals(passWordErrorMessage, expectedTest);
 	  
-	  driver.navigate().back();
   }
   @Test(description = "TC_04 login with incorrect password") 
-  public void TC_04()
+  public void TC_04_Login_With_Incorrect_Password()
   {
+	  driver.get("http://live.demoguru99.com"); 
 	  driver.findElement(By.xpath("//div[@class='footer']//a[contains(text(),'My Account')]")).click();
 	  
 	  driver.findElement(By.id("email")).sendKeys("automation@gmail.com");
@@ -84,14 +84,13 @@ public class Topic_04_05 {
 	  
 	  driver.findElement(By.id("send2")).click();
 	  
-	  String actualTest = driver.findElement(By.xpath("//span[contains(text(),'Invalid login or password.')]")).getText();
+	  String errorMessage = driver.findElement(By.xpath("//span[contains(text(),'Invalid login or password.')]")).getText();
 	  String expectedTest = "Invalid login or password.";
-	  Assert.assertEquals(actualTest, expectedTest);
-	  
-	  driver.navigate().back();
+	  Assert.assertEquals(errorMessage, expectedTest);
+
   } 
   
-  @Test(description = "TC_05 login with valid username and password") 
+  //@Test(description = "TC_05 login with valid username and password") 
   public void TC_05()
   {
 	  driver.findElement(By.xpath("//div[@class='footer']//a[contains(text(),'My Account')]")).click();
@@ -116,7 +115,7 @@ public class Topic_04_05 {
 	  driver.findElement(By.linkText("Log Out")).click();  
 	  
   }
-  @Test(description = "TC_06 create new account") 
+  //@Test(description = "TC_06 create new account") 
 	public void TC_06() {
 		driver.findElement(By.xpath("(//a[@title='My Account'])[last()]")).click();
 		driver.findElement(By.xpath("//span[contains(text(),'Create an Account')]")).click();
