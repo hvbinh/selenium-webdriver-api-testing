@@ -156,7 +156,7 @@ public class Topic_04_05_xpath_CSS {
 
 		WebDriverWait wait = new WebDriverWait(driver, 30);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(
-				By.xpath("//div[@class='page-title']//h2[contains(text(),'This is demo site for')]")));
+		By.xpath("//div[@class='page-title']//h2[contains(text(),'This is demo site for')]")));
 		
 		Assert.assertEquals(driver.getTitle(), "Home page");
 	}
