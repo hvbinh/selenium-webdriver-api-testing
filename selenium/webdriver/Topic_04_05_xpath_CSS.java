@@ -160,7 +160,6 @@ public class Topic_04_05_xpath_CSS {
 		
 		Assert.assertEquals(driver.getTitle(), "Home page");
 		 
-
 	}
 
 	@AfterClass
