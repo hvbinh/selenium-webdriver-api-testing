@@ -159,7 +159,6 @@ public class Topic_04_05_xpath_CSS {
 				By.xpath("//div[@class='page-title']//h2[contains(text(),'This is demo site for')]")));
 		
 		Assert.assertEquals(driver.getTitle(), "Home page");
-		 
 	}
 
 	@AfterClass
