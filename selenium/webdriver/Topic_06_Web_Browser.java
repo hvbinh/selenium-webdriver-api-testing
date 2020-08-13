@@ -18,12 +18,13 @@ public class Topic_06_Web_Browser {
   @BeforeClass
   public void beforeClass() {
 	  driver = new FirefoxDriver();
-	  driver.get("http://live.demoguru99.com");
   }
-  @SuppressWarnings("deprecation")
+
 @Test(description = "verify URL")
-  public void TC_01()
+  public void TC_01_Verify_URL()
   {
+	  driver.get("http://live.demoguru99.com");
+	  
 	  driver.findElement(By.xpath("(//a[@title='My Account'])[last()]")).click();
 	  String loginURL = "http://live.demoguru99.com/index.php/customer/account/login/";
 	  Assert.assertEquals(driver.getCurrentUrl(), loginURL);
@@ -34,9 +35,10 @@ public class Topic_06_Web_Browser {
 	  
   }
   @Test(description = "verify title")
-  public void TC_02()
+  public void TC_02_Verify_Title()
   {
 	  driver.get("http://live.demoguru99.com");
+	  
 	  driver.findElement(By.xpath("(//a[@title='My Account'])[last()]")).click();
 	  String loginTitle = "Customer Login";
 	  Assert.assertEquals(driver.getTitle(), loginTitle);
@@ -46,9 +48,10 @@ public class Topic_06_Web_Browser {
 	  Assert.assertEquals(driver.getTitle(), createTitle);
   }
   @Test(description = "navigate function")
-  public void TC_03()
+  public void TC_03_Navigate_Function()
   {
 	  driver.get("http://live.demoguru99.com");
+	  
 	  driver.findElement(By.xpath("(//a[@title='My Account'])[last()]")).click(); 
 	  driver.findElement(By.xpath("//span[contains(text(),'Create an Account')]")).click();
 	  String createURL = "http://live.demoguru99.com/index.php/customer/account/create/";
@@ -63,7 +66,7 @@ public class Topic_06_Web_Browser {
 	  Assert.assertEquals(driver.getTitle(), createTitle);
   }
   @Test(description = "get page source")
-  public void TC_04()
+  public void TC_04_Get_Page_Source_Code()
   {
 	  driver.get("http://live.demoguru99.com");
 	  driver.findElement(By.xpath("(//a[@title='My Account'])[last()]")).click(); 
