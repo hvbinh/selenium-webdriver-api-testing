@@ -2,125 +2,101 @@ package webdriver;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeClass;
+
+import java.util.concurrent.TimeUnit;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 
 public class Topic_06_Element {
 	WebDriver driver;
+	By emailTextBoxBy = By.xpath("//input[@id='mail']");
+	By ageUnder18RadioBy = By.xpath("//input[@id='under_18']");
+	By educationTextAreaBy = By.xpath("//textarea[@id='edu']");
+	
+	By jobRole1DropDownBy = By.xpath("//select[@id='job1']");
+	By jobRole2DropDownBy = By.xpath("//select[@id='job2']");
+	By developeCheckBoxBy = By.xpath("//input[@id='development']");
+	By slider1By = By.xpath("//input[@id='slider-1']");
+	
+	By passwordTextBoxBy = By.xpath("//input[@id='password' and @disabled='disabled']");
+	By disableRadioBy = By.xpath("//input[@id='radio-disabled']");
+	By biographyTextArea = By.xpath("//textarea[@id='bio']");
+	By jobRole3DropDownBy = By.xpath("//select[@id='job3']");
+	By disableCheckboxBy = By.xpath("//input[@id='check-disbaled']");
+	By slider2By = By.xpath("//input[@id='slider-2']");
+	
+	By javaCheckboxBy = By.xpath("//input[@id='java']");
+	
+
 
 	@BeforeClass
 	public void beforeClass() {
 		driver = new FirefoxDriver();
+		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		
 		driver.get("https://automationfc.github.io/basic-form/index.html");
 	}
 
 	@Test(description = "check element is displayed")
-	public void TC_01() {
-		Boolean email, ageUnder18, education;
-		email = driver.findElement(By.xpath("//label[@for='email']")).isDisplayed();
-		ageUnder18 = driver.findElement(By.xpath("//label[@for='under_18']")).isDisplayed();
-		education = driver.findElement(By.xpath("//label[@for='edu']")).isDisplayed();
-
-		Assert.assertTrue(email);
-		Assert.assertTrue(ageUnder18);
-		Assert.assertTrue(education);
+	public void TC_01_Check_Element_Is_Displayed() {
+		if(isElementDisplayed(emailTextBoxBy))
+		{
+			sendKeyToElement(emailTextBoxBy, "Automation Testing");
+		}
+		if(isElementDisplayed(educationTextAreaBy))
+		{
+			sendKeyToElement(educationTextAreaBy, "Automation Testing");
+		}
+		if(isElementDisplayed(ageUnder18RadioBy))
+		{
+			clickToElement(ageUnder18RadioBy);
+		}
+		
 	}
 
 	@Test(description = "check element is enable/disable")
-	public void TC_02() {
-		Boolean email, ageUnder18, education, jobRole1, jobRole2, development, slider1;
-		email = driver.findElement(By.xpath("//label[@for='email']")).isEnabled();
-		ageUnder18 = driver.findElement(By.xpath("//label[@for='under_18']")).isEnabled();
-		education = driver.findElement(By.xpath("//label[@for='edu']")).isEnabled();
-		jobRole1 = driver.findElement(By.xpath("//label[@for='job1']")).isEnabled();
-		jobRole2 = driver.findElement(By.xpath("//label[@for='job2']")).isEnabled();
-		development = driver.findElement(By.xpath("//label[@for='development']")).isEnabled();
-		slider1 = driver.findElement(By.xpath("//label[@for='slider-1']")).isEnabled();
+	public void TC_02_Check_Element_Enable_Disable() {
+		
+		driver.navigate().refresh();
 
-		if (email == true) {
-			System.out.println("email is enable");
-		}
-		if (ageUnder18 == true) {
-			System.out.println("ageUnder18 is enable");
-		}
-		if (education == true) {
-			System.out.println("education is enable");
-		}
-		if (jobRole1 == true) {
-			System.out.println("jobRole1 is enable");
-		}
-		if (jobRole2 == true) {
-			System.out.println("jobRole2 is enable");
-		}
-		if (development == true) {
-			System.out.println("development is enable");
-		}
-		if (slider1 == true) {
-			System.out.println("slider1 is enable");
-		}
+		Assert.assertTrue(isElementEnable(emailTextBoxBy));
+		Assert.assertTrue(isElementEnable(ageUnder18RadioBy));
+		Assert.assertTrue(isElementEnable(educationTextAreaBy));
+		Assert.assertTrue(isElementEnable(jobRole1DropDownBy));
+		Assert.assertTrue(isElementEnable(jobRole2DropDownBy));
+		Assert.assertTrue(isElementEnable(developeCheckBoxBy));
+		Assert.assertTrue(isElementEnable(slider1By));
 
-		Assert.assertTrue(email);
-		Assert.assertTrue(ageUnder18);
-		Assert.assertTrue(education);
-		Assert.assertTrue(jobRole1);
-		Assert.assertTrue(jobRole2);
-		Assert.assertTrue(development);
-		Assert.assertTrue(slider1);
-
-		Boolean password, radio, biography, jobRole3, checkbox, slider2;
-		password = driver.findElement(By.xpath("//input[@id='password' and @disabled='disabled']")).isEnabled();
-		radio = driver.findElement(By.xpath("//input[@id='radio-disabled']")).isEnabled();
-		biography = driver.findElement(By.xpath("//textarea[@id='bio']")).isEnabled();
-		jobRole3 = driver.findElement(By.xpath("//select[@id='job3']")).isEnabled();
-		checkbox = driver.findElement(By.xpath("//input[@id='check-disbaled']")).isEnabled();
-		slider2 = driver.findElement(By.xpath("//input[@id='slider-2']")).isEnabled();
-
-		if (password == false) {
-			System.out.println("password is disable");
-		}
-		if (radio == false) {
-			System.out.println("radio is disable");
-		}
-		if (biography == false) {
-			System.out.println("biography is disable");
-		}
-		if (jobRole3 == false) {
-			System.out.println("jobRole3 is disable");
-		}
-		if (checkbox == false) {
-			System.out.println("checkbox is disable");
-		}
-		if (slider2 == false) {
-			System.out.println("slider2 is disable");
-		}
-
-		Assert.assertFalse(password);
-		Assert.assertFalse(radio);
-		Assert.assertFalse(biography);
-		Assert.assertFalse(jobRole3);
-		Assert.assertFalse(checkbox);
-		Assert.assertFalse(slider2);
+		Assert.assertFalse(isElementEnable(passwordTextBoxBy));
+		Assert.assertFalse(isElementEnable(disableRadioBy));
+		Assert.assertFalse(isElementEnable(biographyTextArea));
+		Assert.assertFalse(isElementEnable(jobRole3DropDownBy));
+		Assert.assertFalse(isElementEnable(disableCheckboxBy));
+		Assert.assertFalse(isElementEnable(slider2By));
 	}
 
 	@Test(description = "check element is selected")
 	public void TC_03() {
-		Boolean ageUnder18, development;
-		driver.findElement(By.xpath("//input[@id='under_18']")).click();
-		driver.findElement(By.xpath("//input[@id='development']")).click();
-		ageUnder18 = driver.findElement(By.xpath("//input[@id='under_18']")).isSelected();
-		development = driver.findElement(By.xpath("//input[@id='development']")).isSelected();
-		Assert.assertTrue(ageUnder18);
-		Assert.assertTrue(development);
 		
-		driver.findElement(By.xpath("//input[@id='development']")).click();
-		development = driver.findElement(By.xpath("//input[@id='development']")).isSelected();
-		Assert.assertFalse(development);
-
+		driver.navigate().refresh();
+		
+		clickToElement(ageUnder18RadioBy);
+		clickToElement(javaCheckboxBy);
+		
+		Assert.assertTrue(isElementSelected(ageUnder18RadioBy));
+		Assert.assertTrue(isElementSelected(javaCheckboxBy));
+		
+		clickToElement(javaCheckboxBy);
+		Assert.assertFalse(isElementSelected(javaCheckboxBy));
+		
 	}
-	@Test(description = "register function with mailChimp")
+	//@Test(description = "register function with mailChimp")
 	public void TC_04() {
 		driver.get("https://login.mailchimp.com/signup/");
 		driver.findElement(By.id("email")).sendKeys("tonytest1@test.com");
@@ -152,6 +128,66 @@ public class Topic_06_Element {
 		Assert.assertTrue(driver.findElement(By.id("marketing_newsletter")).isSelected());
 
 	}
+	public boolean isElementDisplayed(By by)
+	{
+		WebElement element = driver.findElement(by);
+		if(element.isDisplayed())
+		{
+			System.out.println("element is displayed "+element);
+			return true;
+			
+		}
+		else
+		{
+			System.out.println("element is not displayed "+element);
+			return false;
+		}
+		
+	}
+	public boolean isElementEnable(By by)
+	{
+		WebElement element = driver.findElement(by);
+		if(element.isEnabled())
+		{
+			System.out.println("element is enabled "+element);
+			return true;
+			
+		}
+		else
+		{
+			System.out.println("element is disable "+element);
+			return false;
+		}
+		
+	}
+	public boolean isElementSelected(By by)
+	{
+		WebElement element = driver.findElement(by);
+		if(element.isSelected())
+		{
+			System.out.println("element is selected "+element);
+			return true;
+			
+		}
+		else
+		{
+			System.out.println("element is de-selected "+element);
+			return false;
+		}
+		
+	}
+	public void sendKeyToElement(By by,String value)
+	{
+		WebElement element = driver.findElement(by);
+		element.clear();
+		element.sendKeys(value);
+	}
+	public void clickToElement(By by)
+	{
+		WebElement element = driver.findElement(by);
+		element.click();
+	}
+
 
 	@AfterClass
 	public void afterClass() {
