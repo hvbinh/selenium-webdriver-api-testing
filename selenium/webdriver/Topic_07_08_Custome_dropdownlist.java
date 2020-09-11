@@ -63,8 +63,8 @@ public class Topic_07_08_Custome_dropdownlist {
 		sleepInSecond(3);
 		Assert.assertTrue(driver.findElement(By.xpath("//div[text()='Justen Kitsune']")).isDisplayed());
 	}
-	@Test
-	public void TC_02_VuJS() {
+	//@Test
+	public void TC_03_VuJS() {
 		driver.get("https://mikerodham.github.io/vue-dropdowns/");
 
 		selectTheItemInCustomeDropdown("//li[@class='dropdown-toggle']",
@@ -82,6 +82,15 @@ public class Topic_07_08_Custome_dropdownlist {
 		sleepInSecond(3);
 		Assert.assertTrue(driver.findElement(By.xpath("//li[contains(.,'Third Option')]")).isDisplayed());
 	}
+	@Test
+	public void TC_Example()
+	{
+		driver.get("https://demos.telerik.com/kendo-ui/dropdownlist/index");
+
+		selectTheItemInCustomeDropdown1("//span[@class='k-dropdown-wrap k-state-default']",
+				"//span[@class='k-state-default']/h3", "Produce");
+		sleepInSecond(3);
+	}
 
 	public void selectTheItemInCustomeDropdown(String parentXpath, String childXpath, String expectedText) {
 
@@ -91,10 +100,30 @@ public class Topic_07_08_Custome_dropdownlist {
 		List<WebElement> childItems = driver.findElements(By.xpath(childXpath));
 
 		for (WebElement actualItem : childItems) {
+			System.out.println("actual: "+actualItem.getText());
 			if (actualItem.getText().trim().equals(expectedText)) {
 				jsExecutor.executeScript("arguments[0].scrollIntoView(true);", actualItem);
 				sleepInSecond(1);
+				actualItem.click();
+				break;
+			}
+		}
 
+	}
+	public void selectTheItemInCustomeDropdown1(String parentXpath, String childXpath, String expectedText) {
+
+		driver.findElement(By.xpath(parentXpath)).click();
+		explicitWait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(childXpath)));
+
+		List<WebElement> childItems = driver.findElements(By.xpath(childXpath));
+
+		for (WebElement actualItem : childItems) {
+			System.out.println("actual: "+actualItem.getText());
+			if (actualItem.getText().trim().equals(expectedText)) {
+				jsExecutor.executeScript("arguments[0].scrollIntoView(true);", actualItem);
+				jsExecutor.executeScript("arguments[0].click();", actualItem);
+				sleepInSecond(1);
+				System.out.println("actual: "+actualItem.getText());
 				actualItem.click();
 				break;
 			}
