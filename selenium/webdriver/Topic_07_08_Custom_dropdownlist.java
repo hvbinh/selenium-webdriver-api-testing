@@ -16,7 +16,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 
-public class Topic_07_08_Custome_dropdownlist {
+public class Topic_07_08_Custom_dropdownlist {
 	WebDriver driver;
 	WebDriverWait explicitWait;
 	JavascriptExecutor jsExecutor;
@@ -83,6 +83,25 @@ public class Topic_07_08_Custome_dropdownlist {
 		Assert.assertTrue(driver.findElement(By.xpath("//li[contains(.,'Third Option')]")).isDisplayed());
 	}
 	@Test
+	public void TC_04_Angular()
+	{
+		driver.get("https://ej2.syncfusion.com/angular/demos/?_ga=2.262049992.437420821.1575083417-524628264.1575083417#/material/drop-down-list/data-binding");
+		
+		selectTheItemInCustomeDropdown("//ejs-dropdownlist[@id='games']//span[contains(@class,'e-search-icon')]", "//ul[@id='games_options']//li", "Golf");
+		sleepInSecond(2);
+		Assert.assertEquals(getHiddenText("#games_hidden>option"), "Golf");
+		
+		selectTheItemInCustomeDropdown("//ejs-dropdownlist[@id='games']//span[contains(@class,'e-search-icon')]", "//ul[@id='games_options']//li", "Snooker");
+		sleepInSecond(2);
+		Assert.assertEquals(getHiddenText("#games_hidden>option"), "Snooker");
+		
+		selectTheItemInCustomeDropdown("//ejs-dropdownlist[@id='games']//span[contains(@class,'e-search-icon')]", "//ul[@id='games_options']//li", "Badminton");
+		sleepInSecond(2);
+		Assert.assertEquals(getHiddenText("#games_hidden>option"), "Badminton");
+		
+		
+	}
+	//@Test
 	public void TC_Example()
 	{
 		driver.get("https://demos.telerik.com/kendo-ui/dropdownlist/index");
@@ -129,6 +148,10 @@ public class Topic_07_08_Custome_dropdownlist {
 			}
 		}
 
+	}
+	public String getHiddenText(String cssLocator)
+	{
+		return (String) jsExecutor.executeScript("return document.querySelector(\""+cssLocator+"\").textContent");
 	}
 
 	public void sleepInSecond(long second) {

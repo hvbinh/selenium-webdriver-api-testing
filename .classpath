@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="selenium"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="libraries/selenium-server-standalone-2.53.1.jar" sourcepath="C:/Program Files/Java/jdk1.8.0_211/src.zip">
+	<classpathentry kind="lib" path="libraries/selenium-server-standalone-2.53.1.jar" sourcepath="D:/Automation/Automation FC/02. Selenium API/libraries/selenium-server-standalone-2.53.1.jar">
 		<attributes>
 			<attribute name="source_encoding" value="UTF-8"/>
 		</attributes>
