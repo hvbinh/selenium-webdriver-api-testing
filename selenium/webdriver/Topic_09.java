@@ -23,7 +23,7 @@ public class Topic_09 {
 	  jsExecutor = (JavascriptExecutor) driver;
 	  
   }
-  @Test
+  //@Test
   public void TC_01_Verify_Enable_Disable() {
 	  
 	  driver.get("https://www.fahasa.com/customer/account/create?attempt=1");
@@ -43,7 +43,7 @@ public class Topic_09 {
 	  driver.findElement(By.xpath("//a[text()='Đăng ký']")).click();
 	  Assert.assertFalse(driver.findElement(By.xpath("//button[@class='fhs-btn-register']")).isEnabled());
   }
-  @Test
+  //@Test
   public void TC_02_Practice_With_Button()
   {
 	  driver.get("http://live.demoguru99.com/");
@@ -55,6 +55,39 @@ public class Topic_09 {
 	  driver.get("http://live.demoguru99.com/");
 	  WebElement linkMyAccount = driver.findElement(By.xpath("//div[@class='footer']//a[@title='My Account']"));
 	  jsExecutor.executeScript("arguments[0].click();", linkMyAccount);
+	  
+  }
+  @Test
+  public void TC_03_Default_CheckBox()
+  {
+	  driver.get("https://demos.telerik.com/kendo-ui/checkbox/index");
+	  
+	  //default
+	  WebElement duaZoneCheckbox = driver.findElement(By.xpath("//label[text()='Dual-zone air conditioning']/preceding-sibling::input"));
+	  duaZoneCheckbox.click();
+	  Assert.assertTrue(duaZoneCheckbox.isSelected());
+	  sleepInSeconds(3);
+	  
+	  driver.get("https://demos.telerik.com/kendo-ui/radiobutton/index");
+	  WebElement petrolRadio = driver.findElement(By.xpath("//label[text()='2.0 Petrol, 147kW']/preceding-sibling::input"));
+	  petrolRadio.click();
+	  sleepInSeconds(3);
+	  Assert.assertTrue(petrolRadio.isSelected());
+	  //check if not select then select
+	  if(!driver.findElement(By.xpath("//label[text()='2.0 Petrol, 147kW']/preceding-sibling::input")).isSelected())
+	  {
+		  driver.findElement(By.xpath("//label[text()='2.0 Petrol, 147kW']/preceding-sibling::input")).click();
+	  }
+  }
+  @Test
+  public void custom_Checkbox_RadioButton()
+  {
+	  driver.get("https://material.angular.io/components/radio/examples");
+	  
+	  WebElement winter = driver.findElement(By.xpath("//label[@class='mat-radio-label']//div[contains(.,'Winter')]/preceding-sibling::div/input"));
+	  jsExecutor.executeScript("arguments[0].click();", winter);
+	  Assert.assertTrue(winter.isSelected());
+
 	  
   }
   public void sleepInSeconds(long second)
