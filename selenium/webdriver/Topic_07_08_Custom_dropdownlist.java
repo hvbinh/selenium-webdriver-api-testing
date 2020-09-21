@@ -98,8 +98,7 @@ public class Topic_07_08_Custom_dropdownlist {
 		selectTheItemInCustomeDropdown("//ejs-dropdownlist[@id='games']//span[contains(@class,'e-search-icon')]", "//ul[@id='games_options']//li", "Badminton");
 		sleepInSecond(2);
 		Assert.assertEquals(getHiddenText("#games_hidden>option"), "Badminton");
-		
-		
+			
 	}
 	//@Test
 	public void TC_Example()
