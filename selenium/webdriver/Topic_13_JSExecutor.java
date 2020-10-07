@@ -94,7 +94,7 @@ public class Topic_13_JSExecutor {
 		Assert.assertEquals(demoGuruDomain, "demo.guru99.com");
 		
 	}
-	@Test
+	//@Test
 	public void TC_02_Remove_Attribute()
 	{
 		navigateToUrlByJS("http://demo.guru99.com/v4/");
@@ -124,9 +124,41 @@ public class Topic_13_JSExecutor {
 		sleepInSecond(3);
 		Assert.assertEquals(driver.findElement(By.xpath("//p[@class='heading3']")).getText(), "Customer Registered Successfully!!!");
 	}
+	@Test
 	public void TC_03_Create_An_Account()
 	{
+		navigateToUrlByJS("http://live.demoguru99.com/");
 		
+		WebElement myAccountLink = driver.findElement(By.xpath("//div[@id='header-account']//a[text()='My Account']"));
+		jsExecutor.executeScript("arguments[0].click();", myAccountLink);
+		
+		WebElement createAccountButton = driver.findElement(By.xpath("//a[@title='Create an Account']"));
+		jsExecutor.executeScript("arguments[0].click();", createAccountButton);
+	
+		String firstname = "tony1";
+		String middlename = "jr.";
+		String lastname = "Fer";
+		String emailAddress = "tonyfer" + getRandomNumber() + "@yopmail.com";
+		String password = "123456";
+		String confirmation = "123456";
+		
+		//input create account form
+		jsExecutor.executeScript("document.getElementById('firstname').value='"+firstname+"'");
+		jsExecutor.executeScript("document.getElementById('middlename').value='"+middlename+"'");
+		jsExecutor.executeScript("document.getElementById('lastname').value='"+lastname+"'");
+		jsExecutor.executeScript("document.getElementById('email_address').value='"+emailAddress+"'");
+		jsExecutor.executeScript("document.getElementById('password').value='"+password+"'");
+		jsExecutor.executeScript("document.getElementById('confirmation').value='"+confirmation+"'");
+		
+		jsExecutor.executeScript("arguments[0].click();", driver.findElement(By.xpath("//span[text()='Register']")));
+		
+		//verify message displays 
+		Assert.assertEquals(driver.findElement(By.xpath("//li[@class='success-msg']//span")).getText(), "Thank you for registering with Main Website Store.");
+		
+		//click log out
+		jsExecutor.executeScript("arguments[0].click();", driver.findElement(By.xpath("//a[@title='Log Out']")));
+		sleepInSecond(6);
+		Assert.assertEquals(driver.getCurrentUrl(), "http://live.demoguru99.com/index.php/");
 	}
 
 	public void navigateToUrlByJS(String URL) {
