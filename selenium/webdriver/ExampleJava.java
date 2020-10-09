@@ -17,6 +17,8 @@ public class ExampleJava {
 		listDuplicate.add("J2EE");
 		
 		removeDuplicate(listDuplicate);
+		String relativePath = System.getProperty("user.dir");
+		System.out.println("path = "+relativePath);
 
 	}
 
