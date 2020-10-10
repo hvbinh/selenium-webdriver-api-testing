@@ -3,16 +3,24 @@ package webdriver;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeClass;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -30,6 +38,11 @@ public class Topic_14_Upload_File {
 	String gold_path = source_folder + "\\uploadFile\\" + gold;
 	String silver_path = source_folder + "\\uploadFile\\" + silver;
 	String bronce_path = source_folder + "\\uploadFile\\" + bronce;
+
+	String auto_It_Up_One_File_Chrome = source_folder + "\\AutoItScript\\chromeUploadOneTime.exe";
+	String auto_It_Up_One_File_Firefox = source_folder + "\\AutoItScript\\firefoxUploadOneTime.exe";
+	String auto_It_Up_Multi_File_Chrome = source_folder + "\\AutoItScript\\chromeUploadMultiple.exe";
+	String auto_It_Up_Multi_File_Firefox = source_folder + "\\AutoItScript\\firefoxUploadMultiple.exe";
 
 	// @Test
 	public void TC_01_Upload_By_Sendkey_Chrome() throws Exception {
@@ -110,7 +123,7 @@ public class Topic_14_Upload_File {
 		Assert.assertTrue(driver.findElement(By.xpath("//a[text()='" + bronce + "']")).isDisplayed());
 	}
 
-	@Test
+	// @Test
 	public void TC_03_Upload_By_Sendkey_Chrome() {
 		System.setProperty("webdriver.chrome.driver", source_folder + "\\browserDriver\\chromedriver.exe");
 		driver = new ChromeDriver();
@@ -125,46 +138,186 @@ public class Topic_14_Upload_File {
 		// add pictures
 		uploadFile.sendKeys(gold_path + "\n" + silver_path + "\n" + bronce_path);
 		sleepInSecond(3);
-		
-		//Verify add file successfully
-		Assert.assertTrue(driver.findElement(By.xpath("//tbody/tr/td[text()='"+gold+"']")).isDisplayed());
-		Assert.assertTrue(driver.findElement(By.xpath("//tbody/tr/td[text()='"+silver+"']")).isDisplayed());
-		Assert.assertTrue(driver.findElement(By.xpath("//tbody/tr/td[text()='"+bronce+"']")).isDisplayed());
-		
+
+		// Verify add file successfully
+		Assert.assertTrue(driver.findElement(By.xpath("//tbody/tr/td[text()='" + gold + "']")).isDisplayed());
+		Assert.assertTrue(driver.findElement(By.xpath("//tbody/tr/td[text()='" + silver + "']")).isDisplayed());
+		Assert.assertTrue(driver.findElement(By.xpath("//tbody/tr/td[text()='" + bronce + "']")).isDisplayed());
+
 		// click upload button
 		driver.findElement(By.id("uploadFiles-btnUpload")).click();
 		sleepInSecond(6);
 
 		// click on download link
 		String idCurrentWindow = driver.getWindowHandle();
-		explicitWait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//td[text()='Download link']/following-sibling::td/a"))));
+		explicitWait.until(ExpectedConditions
+				.visibilityOf(driver.findElement(By.xpath("//td[text()='Download link']/following-sibling::td/a"))));
 		driver.findElement(By.xpath("//td[text()='Download link']/following-sibling::td/a")).click();
 
-		//switch window
+		// switch window
 		switchToWindowById(idCurrentWindow);
 		sleepInSecond(6);
-		
-		//close pop-up
+
+		// close pop-up
 		driver.findElement(By.xpath("//button[text()='I have a VPN already']")).click();
+
+		// check icon download displays
+		Assert.assertTrue(driver
+				.findElement(
+						By.xpath("//td[text()='" + gold + "']/following-sibling::td//a[contains(@class,'download')]"))
+				.isDisplayed());
+		Assert.assertTrue(driver
+				.findElement(
+						By.xpath("//td[text()='" + silver + "']/following-sibling::td//a[contains(@class,'download')]"))
+				.isDisplayed());
+		Assert.assertTrue(driver
+				.findElement(
+						By.xpath("//td[text()='" + bronce + "']/following-sibling::td//a[contains(@class,'download')]"))
+				.isDisplayed());
+
+		// check icon play displays
+		Assert.assertTrue(driver
+				.findElement(
+						By.xpath("//td[text()='" + gold + "']/following-sibling::td//a[contains(@class,'showInfo')]"))
+				.isDisplayed());
+		Assert.assertTrue(driver
+				.findElement(
+						By.xpath("//td[text()='" + silver + "']/following-sibling::td//a[contains(@class,'showInfo')]"))
+				.isDisplayed());
+		Assert.assertTrue(driver
+				.findElement(
+						By.xpath("//td[text()='" + bronce + "']/following-sibling::td//a[contains(@class,'showInfo')]"))
+				.isDisplayed());
+	}
+
+	// @Test
+	public void TC_04_Upload_By_AutoIt_One_File_Chrome() throws IOException {
+		System.setProperty("webdriver.chrome.driver", source_folder + "\\browserDriver\\chromedriver.exe");
+		driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.get("http://blueimp.github.io/jQuery-File-Upload/");
+		jsExecutor = (JavascriptExecutor) driver;
+		WebDriverWait explicitWait = new WebDriverWait(driver, 20);
+
+		sleepInSecond(3);
+		driver.findElement(By.xpath("//span[contains(@class,'fileinput-button')]")).click();
+
+		// execute execution file (.exe, .bat)
+		Runtime.getRuntime().exec(new String[] { auto_It_Up_One_File_Chrome, gold_path });
+	}
+
+	// @Test
+	public void TC_05_Upload_By_AutoIt_One_File_Firefox() throws IOException {
+		System.setProperty("webdriver.firefox.driver", source_folder + "\\browserDriver\\geckodriver.exe");
+		driver = new FirefoxDriver();
+		driver.manage().window().maximize();
+		driver.get("http://blueimp.github.io/jQuery-File-Upload/");
+		jsExecutor = (JavascriptExecutor) driver;
+		WebDriverWait explicitWait = new WebDriverWait(driver, 20);
+
+		sleepInSecond(3);
+		driver.findElement(By.xpath("//span[contains(@class,'fileinput-button')]")).click();
+
+		// execute execution file (.exe, .bat)
+		Runtime.getRuntime().exec(new String[] { auto_It_Up_One_File_Firefox, bronce_path });
+	}
+
+	//@Test
+	public void TC_06_Upload_By_AutoIt_Multi_File_Chrome() throws IOException {
+		System.setProperty("webdriver.chrome.driver", source_folder + "\\browserDriver\\chromedriver.exe");
+		driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.get("http://blueimp.github.io/jQuery-File-Upload/");
+		jsExecutor = (JavascriptExecutor) driver;
+		WebDriverWait explicitWait = new WebDriverWait(driver, 20);
+
+		sleepInSecond(3);
+		driver.findElement(By.xpath("//span[contains(@class,'fileinput-button')]")).click();
+
+		sleepInSecond(3);
+		// execute execution file (.exe, .bat)
+		Runtime.getRuntime().exec(new String[] { auto_It_Up_Multi_File_Chrome, gold_path,silver_path,bronce_path });
+	}
+
+	//@Test
+	public void TC_07_Upload_By_AutoIt_Multi_File_Firefox() throws IOException {
+		System.setProperty("webdriver.firefox.driver", source_folder + "\\browserDriver\\geckodriver.exe");
+		driver = new FirefoxDriver();
+		driver.manage().window().maximize();
+		driver.get("http://blueimp.github.io/jQuery-File-Upload/");
+		jsExecutor = (JavascriptExecutor) driver;
+		WebDriverWait explicitWait = new WebDriverWait(driver, 20);
+
+		sleepInSecond(3);
+		driver.findElement(By.xpath("//span[contains(@class,'fileinput-button')]")).click();
+
+		sleepInSecond(3);
+		// execute execution file (.exe, .bat)
+		Runtime.getRuntime().exec(new String[] { auto_It_Up_Multi_File_Firefox, gold_path,silver_path,bronce_path });
 		
-		//check icon download displays
-		Assert.assertTrue(driver.findElement(By.xpath("//td[text()='"+gold+"']/following-sibling::td//a[contains(@class,'download')]")).isDisplayed());
-		Assert.assertTrue(driver.findElement(By.xpath("//td[text()='"+silver+"']/following-sibling::td//a[contains(@class,'download')]")).isDisplayed());
-		Assert.assertTrue(driver.findElement(By.xpath("//td[text()='"+bronce+"']/following-sibling::td//a[contains(@class,'download')]")).isDisplayed());
+	}
+	//@Test
+	public void TC_08_Upload_By_Robot_Chrome() throws IOException, AWTException {
+		System.setProperty("webdriver.firefox.driver", source_folder + "\\browserDriver\\geckodriver.exe");
+		driver = new FirefoxDriver();
+		driver.manage().window().maximize();
+		driver.get("http://blueimp.github.io/jQuery-File-Upload/");
+		jsExecutor = (JavascriptExecutor) driver;
+		WebDriverWait explicitWait = new WebDriverWait(driver, 20);
+
+		sleepInSecond(3);
+		driver.findElement(By.xpath("//span[contains(@class,'fileinput-button')]")).click();
+
+		//select file
+		StringSelection select = new StringSelection(gold_path);
 		
-		//check icon play displays
-		Assert.assertTrue(driver.findElement(By.xpath("//td[text()='"+gold+"']/following-sibling::td//a[contains(@class,'showInfo')]")).isDisplayed());
-		Assert.assertTrue(driver.findElement(By.xpath("//td[text()='"+silver+"']/following-sibling::td//a[contains(@class,'showInfo')]")).isDisplayed());
-		Assert.assertTrue(driver.findElement(By.xpath("//td[text()='"+bronce+"']/following-sibling::td//a[contains(@class,'showInfo')]")).isDisplayed());
+		//copy to clipboard
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(select,null);
+		
+		Robot robot = new Robot();
+		sleepInSecond(1);
+		
+		//nhan phim Enter
+		robot.keyPress(KeyEvent.VK_ENTER);
+		robot.keyRelease(KeyEvent.VK_ENTER);
+		
+		//nhan CTRL + V
+		robot.keyPress(KeyEvent.VK_CONTROL);
+		robot.keyPress(KeyEvent.VK_V);
+		
+		//nha CTRL + V
+		robot.keyRelease(KeyEvent.VK_CONTROL);
+		robot.keyRelease(KeyEvent.VK_V);
+		
+		sleepInSecond(1);
+		//nhan phim Enter
+		robot.keyPress(KeyEvent.VK_ENTER);
+		robot.keyRelease(KeyEvent.VK_ENTER);	
+	}
+	@Test
+	public void TC_09_Upload_By_AutoIT_Chrome() throws IOException
+	{
+		System.setProperty("webdriver.chrome.driver", source_folder + "\\browserDriver\\chromedriver.exe");
+		driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.get("https://gofile.io/uploadFiles");
+		jsExecutor = (JavascriptExecutor) driver;
+		WebDriverWait explicitWait = new WebDriverWait(driver, 20);
+
+		sleepInSecond(3);
+		driver.findElement(By.id("dropZoneBtnSelect")).click();
+		
+		sleepInSecond(1);
+		// execute execution file (.exe, .bat)
+		Runtime.getRuntime().exec(new String[] { auto_It_Up_Multi_File_Chrome, gold_path,silver_path,bronce_path });
+		
 	}
 
 	public void switchToWindowById(String idCurrentWindow) {
 		Set<String> windows = driver.getWindowHandles();
-		
-		for(String window : windows)
-		{
-			if(!idCurrentWindow.equals(window))
-			{
+
+		for (String window : windows) {
+			if (!idCurrentWindow.equals(window)) {
 				driver.switchTo().window(window);
 			}
 		}
