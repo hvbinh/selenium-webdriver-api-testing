@@ -123,7 +123,7 @@ public class Topic_14_Upload_File {
 		Assert.assertTrue(driver.findElement(By.xpath("//a[text()='" + bronce + "']")).isDisplayed());
 	}
 
-	// @Test
+	 @Test
 	public void TC_03_Upload_By_Sendkey_Chrome() {
 		System.setProperty("webdriver.chrome.driver", source_folder + "\\browserDriver\\chromedriver.exe");
 		driver = new ChromeDriver();
@@ -294,7 +294,7 @@ public class Topic_14_Upload_File {
 		robot.keyPress(KeyEvent.VK_ENTER);
 		robot.keyRelease(KeyEvent.VK_ENTER);	
 	}
-	@Test
+	//@Test
 	public void TC_09_Upload_By_AutoIT_Chrome() throws IOException
 	{
 		System.setProperty("webdriver.chrome.driver", source_folder + "\\browserDriver\\chromedriver.exe");
