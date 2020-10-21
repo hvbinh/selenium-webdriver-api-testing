@@ -5,6 +5,7 @@ import org.testng.annotations.BeforeClass;
 
 import static org.testng.Assert.expectThrows;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -112,7 +113,7 @@ public class Topic_15_Wait {
 		Assert.assertEquals(driver.findElement(By.xpath("//td[contains(@class,'rcSelected')]")).getAttribute("title"), "Sunday, October 18, 2020");
 		
 	}
-	@Test
+	//@Test
 	public void TC_06_Explicit_Wait_Upload()
 	{
 		System.setProperty("webdriver.chrome.driver", source_folder + "\\browserDriver\\chromedriver.exe");
@@ -171,6 +172,97 @@ public class Topic_15_Wait {
 						By.xpath("//td[text()='" + silver + "']/following-sibling::td//a[contains(@class,'showInfo')]"))
 				.isDisplayed());
 
+	}
+	//@Test
+	public void TC_07_Element_Not_Found_Only_Implicit()
+	{
+		driver.get("https://www.facebook.com/");
+		
+		//lay timeput cua implicit
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		
+		System.out.println("Element_Not_Found_Only_Implicit from: "+getDateTimeSecondNow()+"-------");
+		try
+		{
+			WebElement emailElement = driver.findElement(By.id("email1"));
+			Assert.assertTrue(emailElement.isDisplayed());
+			System.out.println("switch to catch");
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Element_Not_Found_Only_Implicit :"+ex);
+			System.out.println("-----------exception cua implecit-----------");
+		}
+		System.out.println("Element_Not_Found_Only_Implicit to: "+getDateTimeSecondNow()+"-------");
+	}
+	//@Test
+	public void TC_08_Element_Not_Found_Implicit_Greater_Than_Explicit()
+	{
+		driver.get("https://www.facebook.com/");
+		
+		//lay timeput cua implicit
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		WebDriverWait explicitWait = new WebDriverWait(driver, 5);
+		
+		System.out.println("Element_Not_Found_Implicit_Greater_Than_Explicit from: "+getDateTimeSecondNow()+"-------");
+		try
+		{
+			explicitWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("email1")));
+			System.out.println("switch to catch");
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Element_Not_Found_Implicit_Greater_Than_Explicit :"+ex);
+			System.out.println("-----------exception cua implecit-----------");
+		}
+		System.out.println("Element_Not_Found_Implicit_Greater_Than_Explicit to: "+getDateTimeSecondNow()+"-------");
+	}
+	//@Test
+	public void TC_09_Element_Not_Found_Explicit_Only_By()
+	{
+		driver.get("https://www.facebook.com/");
+		
+		
+		WebDriverWait explicitWait = new WebDriverWait(driver, 5);
+		
+		System.out.println("Element_Not_Found_Explicit_Only_By from: "+getDateTimeSecondNow()+"-------");
+		try
+		{
+			explicitWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("email1")));
+			System.out.println("switch to catch");
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Element_Not_Found_Explicit_Only_By :"+ex);
+			System.out.println("-----------exception cua implecit-----------");
+		}
+		System.out.println("Element_Not_Found_Explicit_Only_By to: "+getDateTimeSecondNow()+"-------");
+	}
+	@Test
+	public void TC_10_Element_Not_Found_Explicit_Only_WebElement()
+	{
+		driver.get("https://www.facebook.com/");
+		
+		
+		WebDriverWait explicitWait = new WebDriverWait(driver, 10);
+		
+		System.out.println("Element_Not_Found_Explicit_Only_WebElement from: "+getDateTimeSecondNow()+"-------");
+		try
+		{
+			explicitWait.until(ExpectedConditions.visibilityOf(driver.findElement(By.id("email1"))));
+			System.out.println("switch to catch");
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Element_Not_Found_Explicit_Only_WebElement :"+ex);
+			System.out.println("-----------exception cua implecit-----------");
+		}
+		System.out.println("Element_Not_Found_Explicit_Only_WebElement to: "+getDateTimeSecondNow()+"-------");
+	}
+	public String getDateTimeSecondNow()
+	{
+		Date date = new Date();
+		return date.toString();
 	}
 	public void switchToWindowById(String idCurrentWindow) {
 		Set<String> windows = driver.getWindowHandles();
