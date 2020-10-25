@@ -1,21 +1,25 @@
 package webdriver;
 
 import org.testng.annotations.Test;
+
+import com.google.common.base.Function;
+
 import org.testng.annotations.BeforeClass;
 
 import static org.testng.Assert.expectThrows;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -238,7 +242,7 @@ public class Topic_15_Wait {
 		}
 		System.out.println("Element_Not_Found_Explicit_Only_By to: "+getDateTimeSecondNow()+"-------");
 	}
-	@Test
+	//@Test
 	public void TC_10_Element_Not_Found_Explicit_Only_WebElement()
 	{
 		driver.get("https://www.facebook.com/");
@@ -258,6 +262,85 @@ public class Topic_15_Wait {
 			System.out.println("-----------exception cua implecit-----------");
 		}
 		System.out.println("Element_Not_Found_Explicit_Only_WebElement to: "+getDateTimeSecondNow()+"-------");
+	}
+	//@Test
+	public void TC_11_Fluent_Wait_1()
+	{
+		driver.get("https://www.facebook.com/");
+		
+		FluentWait<WebDriver> fluentDiver = new FluentWait<WebDriver>(driver);
+		System.out.println("TC_11_Fluent_Wait_1 from: "+getDateTimeSecondNow()+"-------");
+		fluentDiver.withTimeout(15, TimeUnit.SECONDS)
+		.pollingEvery(1, TimeUnit.SECONDS)
+		.ignoring(NoSuchElementException.class);
+		
+		WebElement emailTextField = fluentDiver.until(new Function<WebDriver, WebElement>() {
+
+			
+			public WebElement apply(WebDriver t) {
+				System.out.println("TC_11_Fluent_Wait_1 to: "+getDateTimeSecondNow()+"-------");
+				return driver.findElement(By.id("email1"));
+			}
+		});
+		
+	}
+	//@Test
+	public void TC_11_Fluent_Wait_2()
+	{
+		driver.get("https://automationfc.github.io/fluent-wait/");
+		WebElement countDown = driver.findElement(By.id("javascript_countdown_time"));
+		
+		FluentWait<WebElement> fluentElement = new FluentWait<WebElement>(countDown);
+		
+		fluentElement.withTimeout(15, TimeUnit.SECONDS)
+		.pollingEvery(100, TimeUnit.MILLISECONDS)
+		.ignoring(NoSuchElementException.class)
+		//kiem tra dieu kien
+		.until(new Function<WebElement, Boolean>() {
+			
+			
+			public Boolean apply(WebElement element) {
+				
+				boolean flag = countDown.getText().endsWith("00");
+				System.out.println("Second = "+element.getText()+"-------");
+				return flag;
+			}
+		});
+		
+		
+		
+	}
+	@Test
+	public void TC_11_Fluent_Wait_3()
+	{
+		driver.get("http://the-internet.herokuapp.com/dynamic_loading/2");
+		
+		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+		
+		WebElement startButton = driver.findElement(By.xpath("//button[text()='Start']"));
+		driver.findElement(By.xpath("//button[text()='Start']")).click();
+		FluentWait<WebElement> fluentElement = new FluentWait<WebElement>(startButton);
+		
+		fluentElement.withTimeout(15, TimeUnit.SECONDS)
+		.pollingEvery(100, TimeUnit.MILLISECONDS)
+		.ignoring(NoSuchElementException.class)
+		//kiem tra dieu kien
+		.until(new Function<WebElement, Boolean>() {
+
+			
+			public Boolean apply(WebElement element) {
+				WebElement helloWorld = waitForDisplay("//h4[text()='Hello World1!']");
+				boolean flag = helloWorld.isDisplayed();
+				System.out.println("TC_11_Fluent_Wait_3 to: "+getDateTimeSecondNow()+"-------");
+				return flag;
+			}
+		});
+		
+		
+	}
+	public WebElement waitForDisplay(String locator)
+	{
+		return driver.findElement(By.xpath(locator));
 	}
 	public String getDateTimeSecondNow()
 	{
